@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tulipanes Lilas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: #000000;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .container {
+            position: relative;
+            width: 100vw;
+            height: 80vh; /* Reduce la altura para dejar espacio para el botón */
+            overflow: hidden;
+        }
+        .tulip {
+            position: absolute;
+            width: 20vmin; /* Ajusta el tamaño según tus necesidades */
+            height: 20vmin;
+            background-image: url('flor.png'); /* Asegúrate de que la ruta de la imagen es correcta */
+            background-size: cover;
+            background-position: center;
+            opacity: 1;
+        }
+
+        /* Animación de parpadeo */
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        /* Animación de brillo */
+        @keyframes glow {
+            0% { filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
+            100% { filter: drop-shadow(0 0 15px rgba(255,255,255,1)); }
+        }
+
+        /* Clase para brillo aleatorio */
+        .glow {
+            animation: glow 1.5s infinite alternate;
+        }
+
+        h1 {
+            color: #ffffff;
+            position: absolute;
+            top: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 41;
+            font-size: 2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+        }
+        
+        .add-flower-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #ffffff;
+            background-color: #ff6347; /* Color de fondo del botón */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-flower-button:hover {
+            background-color: #ff4500; /* Color del botón al pasar el mouse */
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="flower-container">
+        <h1>Tu sonrisa es más bonita que cualquier campo de flores ♥</h1>
+    </div>
+    <button class="add-flower-button" id="add-flower-btn">Ver Flores</button>
+
+    <script>
+        // Número total máximo de flores
+        const maxFlowers = 80;
+        let currentFlowerCount = 0;
+
+        // Selecciona el contenedor y el botón
+        const container = document.getElementById('flower-container');
+        const addFlowerBtn = document.getElementById('add-flower-btn');
+
+        // Función para generar una posición aleatoria
+        function getRandomPosition() {
+            const x = Math.random() * 100; // Posición horizontal (0% a 100%)
+            const y = Math.random() * 100; // Posición vertical (0% a 100%)
+            return { x, y };
+        }
+
+        // Función para aplicar brillo aleatorio
+        function applyRandomGlow(element) {
+            // Elimina la clase glow si ya está aplicada
+            element.classList.remove('glow');
+
+            // Aplica el brillo aleatorio después de un tiempo aleatorio
+            setTimeout(() => {
+                element.classList.add('glow');
+                // Remueve la clase glow después de un tiempo aleatorio para crear el parpadeo
+                setTimeout(() => {
+                    element.classList.remove('glow');
+                }, Math.random() * 2000 + 1000); // Duración entre 1s y 3s
+            }, Math.random() * 5000); // Inicio aleatorio entre 0s y 5s
+        }
+
+        // Función para añadir una flor al contenedor
+        function addFlower() {
+            if (currentFlowerCount < maxFlowers) {
+                const tulip = document.createElement('div');
+                tulip.classList.add('tulip');
+                
+                // Establece la posición aleatoria
+                const { x, y } = getRandomPosition();
+                tulip.style.left = `${x}%`;
+                tulip.style.top = `${y}%`;
+
+                // Añade la flor al contenedor
+                container.appendChild(tulip);
+
+                // Aplica el brillo aleatorio a la flor
+                applyRandomGlow(tulip);
+
+                // Incrementa el contador de flores
+                currentFlowerCount++;
+            } else {
+                alert('Ya se acabaron las flores :( si quieres mas dime <3');
+            }
+        }
+
+        // Maneja el clic en el botón
+        addFlowerBtn.addEventListener('click', addFlower);
+    </script>
+</body>
+</html>
